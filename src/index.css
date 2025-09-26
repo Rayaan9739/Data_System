@@ -1,20 +1,29 @@
+/* ====== Reset & base ====== */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
+/* base reset + font */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
 }
-
+html,
+body,
+#root {
+  height: 100%;
+}
 body {
   background: linear-gradient(to bottom right, #ebf4ff, #f0fdf4);
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #0f172a;
 }
 
+/* ====== App header (exact copy of original) ====== */
 .app-header {
   position: fixed;
   top: 0;
@@ -25,128 +34,437 @@ body {
   text-align: center;
   padding: 2rem 1rem;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
+  line-height: 1.05;
   border-radius: 0 0 1rem 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  z-index: 50;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  z-index: 999;
 }
 
+/* small screens shrink header text */
+@media (max-width: 420px) {
+  .app-header {
+    font-size: 1.15rem;
+    padding: 1.25rem 0.75rem;
+    text-align: center;
+  }
+}
+
+/* ====== Card containers: auth-box / form-box / staff form etc ====== */
 .auth-box,
-.form-box {
-  margin: 8rem auto;
-  background: white;
+.form-box,
+.staff-form,
+.dashboard .panel {
+  margin: 8rem auto 2rem;
+  background: #ffffff;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.04);
+  max-width: 100%;
 }
 
+/* specific widths */
 .auth-box {
-  max-width: 500px;
+  max-width: 460px;
 }
-
 .form-box {
   max-width: 1000px;
 }
-
-h3 {
-  color: #1e1b4b;
-  margin-bottom: 1.5rem;
+.staff-form {
+  max-width: 720px;
 }
 
-input,
-textarea {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
-}
-
-button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-green {
-  background: #16a34a;
-  color: white;
-}
-.btn-green:hover {
-  background: #15803d;
-}
-
-.btn-blue {
-  background: #2563eb;
-  color: white;
-}
-.btn-blue:hover {
-  background: #1d4ed8;
-}
-
-.btn-gray {
-  background: #6b7280;
-  color: white;
-}
-.btn-gray:hover {
-  background: #4b5563;
-}
-
-/* Table */
-.table-container {
-  margin-top: 2rem;
-  overflow-x: auto;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-th,
-td {
-  border: 1px solid #d1d5db;
-  padding: 0.75rem;
-  text-align: left;
-}
-th {
-  background: #f9fafb;
-}
-
-/* Modal */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 1rem;
-  max-width: 500px;
-  text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Responsive breakpoints similar to Tailwind */
+/* responsive spacing like tailwind md: */
 @media (min-width: 640px) {
   .auth-box,
-  .form-box {
+  .form-box,
+  .staff-form {
     padding: 2.5rem;
   }
 }
 @media (min-width: 768px) {
   .auth-box,
-  .form-box {
+  .form-box,
+  .staff-form {
     margin-top: 11rem;
   }
+}
+
+/* heading */
+.auth-box h3,
+.form-box h3,
+.staff-form h3,
+.dashboard h2 {
+  color: #0f172a;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+/* ====== Inputs & selects & textarea (consistent) ====== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select,
+textarea,
+.MuiInput-root, /* MUI override */
+input, textarea, select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  margin-bottom: 0.9rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.95rem;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+}
+
+/* focus ring */
+input:focus,
+textarea:focus,
+select:focus,
+.MuiInput-root:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.08) !important;
+}
+
+/* textarea sizing */
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* placeholder style */
+::placeholder {
+  color: #9ca3af;
+  opacity: 1;
+}
+
+/* ====== Buttons (exact colors + radius + hover) ====== */
+button,
+.MuiButton-root {
+  padding: 0.6rem 1.1rem;
+  border-radius: 0.6rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+
+/* green */
+.btn-green,
+.MuiButton-root.btn-green {
+  background: #16a34a;
+  color: #fff;
+}
+.btn-green:hover,
+.MuiButton-root.btn-green:hover {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+/* blue */
+.btn-blue,
+.MuiButton-root.btn-blue {
+  background: #2563eb;
+  color: #fff;
+}
+.btn-blue:hover,
+.MuiButton-root.btn-blue:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* gray */
+.btn-gray,
+.MuiButton-root.btn-gray {
+  background: #6b7280;
+  color: #fff;
+}
+.btn-gray:hover,
+.MuiButton-root.btn-gray:hover {
+  background: #4b5563;
+  transform: translateY(-1px);
+}
+
+/* override default MUI Joy button styles to match look */
+.MuiButton-root {
+  box-shadow: none !important;
+  text-transform: none !important;
+  padding: 0.6rem 1rem !important;
+  border-radius: 8px !important;
+}
+
+/* ====== Message text (success/error) ====== */
+.form-msg {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+.form-msg.success {
+  color: #059669;
+} /* green */
+.form-msg.error {
+  color: #dc2626;
+} /* red */
+
+/* ====== Table styling (pixel match) ====== */
+.table-container {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+thead th {
+  background: #f8fafc;
+  color: #374151;
+  font-weight: 700;
+  padding: 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid #e6eef8;
+}
+tbody td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #0f172a;
+}
+tbody tr:nth-child(even) {
+  background: #fff;
+}
+tbody tr:nth-child(odd) {
+  background: #fbfdff;
+}
+
+/* action buttons inside table */
+.table-actions button {
+  margin-right: 0.5rem;
+}
+
+/* ====== Modal styling (exact copy) ====== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal-content {
+  width: 94%;
+  max-width: 480px;
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
+  text-align: center;
+}
+.modal-content h4 {
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+.modal-content p {
+  color: #374151;
+}
+
+/* ====== Dashboard specific (stat cards & table container) ====== */
+.dashboard {
+  margin: 9.5rem auto 2rem;
+  max-width: 1200px;
+  padding: 1rem;
+}
+.dashboard h2 {
+  color: #0f172a;
+  margin-bottom: 1rem;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+.dashboard .stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.stat-card {
+  background: #fff;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.06);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  min-width: 200px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.09);
+}
+.stat-card .icon {
+  font-size: 2.6rem;
+}
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+.stat-label {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+/* ====== Navbar (override tailwind) ====== */
+header.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  backdrop-filter: blur(6px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 18px rgba(2, 6, 23, 0.06);
+}
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+header .logo .logo-badge {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+/* Desktop nav buttons appearance */
+header nav button {
+  background: transparent;
+  border: none;
+  color: #0f172a;
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+header nav button:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* Mobile dropdown specifics */
+.mobile-dropdown {
+  border-top: 1px solid #e6eef8;
+  background: #fff;
+}
+
+/* ====== Accessibility & small tweaks ====== */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+/* ====== Utility overrides (Tailwind utility names used in JSX) ======
+   These lower-specificity utilities are overridden here to match the original site.
+   If you remove Tailwind, these are harmless; if you keep Tailwind, these force the look.
+*/
+.text-3xl {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+}
+.bg-white {
+  background: #fff !important;
+}
+.shadow-lg {
+  box-shadow: 0 8px 25px rgba(2, 6, 23, 0.06) !important;
+}
+.rounded-xl {
+  border-radius: 12px !important;
+}
+
+/* ====== MUI Joy overrides (AuthGovBoard) ======
+   Strong overrides to force the Joy components to visually match .auth-box look.
+   These selectors are intentionally specific; they use !important because Joy applies inline/sx styles.
+*/
+.MuiSheet-root,
+.MuiJoy-Sheet-root,
+.MuiPaper-root {
+  background: #fff !important;
+  border-radius: 12px !important;
+  border: 1px solid #e6eef8 !important;
+  box-shadow: 0 8px 25px rgba(2, 6, 23, 0.08) !important;
+  padding: 24px !important;
+  max-width: 420px !important;
+  margin: 6.5rem auto 2rem !important;
+}
+.MuiTypography-root[role="heading"],
+.MuiTypography-root[aria-level="4"] {
+  color: #003366 !important;
+  font-weight: 700 !important;
+}
+.MuiInput-root input {
+  padding: 0.7rem 0.9rem !important;
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+}
+.MuiButton-root {
+  border-radius: 8px !important;
+  padding: 0.6rem 1rem !important;
+}
+.MuiButton-root[type="submit"] {
+  background: #003366 !important;
+  color: #fff !important;
+}
+.MuiButton-root.MuiButton-root[variant="soft"] {
+  background: #e6e6e6 !important;
+  color: #111827 !important;
+}
+
+/* small screens adaptation for Joy */
+@media (max-width: 480px) {
+  .MuiSheet-root,
+  .MuiJoy-Sheet-root {
+    margin-top: 4.5rem !important;
+    padding: 18px !important;
+    width: 92% !important;
+  }
+}
+
+/* ====== Final small helpers ====== */
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.flex {
+  display: flex;
+}
+.gap-1 {
+  gap: 0.25rem;
+}
+.gap-2 {
+  gap: 0.5rem;
+}
+.mt-1 {
+  margin-top: 0.25rem;
+}
+.mt-2 {
+  margin-top: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
