@@ -1,26 +1,31 @@
 import { useState } from "react";
+import axios from "axios";
 
 export default function PasswordReset({ onBack }) {
-  const [resetCode, setResetCode] = useState("");
+  const [email, setEmail] = useState("");
   const [newPass, setNewPass] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const handleReset = () => {
-    if (newPass === confirmPass) {
-      alert(`Password reset for ${resetCode}`);
-    } else {
-      alert("Passwords do not match");
+  const handleReset = async () => {
+    if (newPass !== confirmPass) return setMsg("Passwords do not match");
+
+    try {
+      await axios.post("http://localhost:5000/reset-password", { email, newPassword: newPass });
+      setMsg("Password updated successfully");
+    } catch {
+      setMsg("Error resetting password");
     }
   };
 
   return (
     <div className="auth-box">
-      <h3>Reset Your Password</h3>
+      <h3>Reset Password</h3>
       <input
-        type="text"
-        placeholder="College Code"
-        value={resetCode}
-        onChange={(e) => setResetCode(e.target.value)}
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
@@ -42,6 +47,7 @@ export default function PasswordReset({ onBack }) {
           Back
         </button>
       </div>
+      {msg && <p>{msg}</p>}
     </div>
   );
 }
