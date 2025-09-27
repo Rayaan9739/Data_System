@@ -323,7 +323,8 @@ header .logo {
 /* Desktop Menu */
 header nav {
   display: flex;
-  gap: 1.5rem; /* space between items */
+  flex-wrap: wrap; /* allow wrapping */
+  gap: 0.5rem; /* smaller space between items */
 }
 
 header nav button {
@@ -381,17 +382,24 @@ header nav button:hover {
   color: white;
 }
 
-/* ===== Responsive ===== */
+/* Links width for mobile */
 @media (max-width: 768px) {
   header nav {
-    display: none; /* hide desktop menu */
+    flex-direction: row;
+    justify-content: flex-start;
   }
 
-  .hamburger {
-    display: block; /* show hamburger */
+  header nav button:nth-child(1),
+  header nav button:nth-child(2) {
+    flex: 0 0 48%; /* first two side by side */
   }
 
-  .mobile-menu.show {
-    display: flex; /* show mobile menu when active */
+  header nav button:nth-child(3) {
+    flex: 0 0 100%; /* full width */
+    text-align: center; /* center it */
+  }
+
+  header nav button {
+    margin-bottom: 0.5rem;
   }
 }

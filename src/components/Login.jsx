@@ -261,7 +261,7 @@ export default function Login({ onLogin }) {
             </Typography>
           )}
 
-          {/* Developer info message */}
+          {/* Developer info message
           <div
             style={{
               marginTop: "4rem",
@@ -293,7 +293,7 @@ export default function Login({ onLogin }) {
                 dteswv@gmail.com
               </a>
             </p>
-          </div>
+          </div> */}
         </Sheet>
       </main>
     </CssVarsProvider>
