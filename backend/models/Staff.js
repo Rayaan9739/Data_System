@@ -13,6 +13,7 @@ const staffSchema = new mongoose.Schema({
   working: Number,
   vacant: Number,
   remarks: String,
+   createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.model("Staff", staffSchema);

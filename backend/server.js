@@ -4,6 +4,7 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import User from "./models/User.js";
 import Staff from "./models/Staff.js";
+import College from "./models/College.js";
 
 const app = express();
 
@@ -88,6 +89,7 @@ app.post("/staff", async (req, res) => {
       return res.status(400).json({ message: "Sanctioned, working, and vacant must be valid numbers" });
     }
 
+    // Create new staff document
     const newStaff = new Staff({
       college_code,
       college_name,
@@ -98,7 +100,16 @@ app.post("/staff", async (req, res) => {
     });
 
     await newStaff.save();
-    res.status(201).json({ message: "Staff record saved successfully" });
+
+   // Sync college into College collection
+await College.findOneAndUpdate(
+  { code: college_code },               // search by unique college code
+  { name: college_name, code: college_code }, // update or insert
+  { upsert: true, new: true, setDefaultsOnInsert: true } // fix strict mode
+);
+
+
+    res.status(201).json({ message: "Staff & College saved successfully", staff: newStaff });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message || "Server error" });
@@ -116,6 +127,81 @@ app.get("/staff", async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+
+app.get("/colleges", async (req, res) => {
+  try {
+    const colleges = await College.find();
+    res.json(colleges);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching colleges" });
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const users = await User.find(); // Fetch all users from the database
+    res.json(users); // Send the users as JSON
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching users" });
+  }
+});
+
+
+app.get("/counts", async (req, res) => {
+  try {
+    const staff = await Staff.find();
+    const colleges = await College.find();
+    const users = await User.find();
+    res.json({
+      faculty: staff.length,
+      colleges: colleges.length,
+      users: users.length
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+
+
+//delete staffs
+
+app.delete("/staff/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Find the staff first
+    const staffToDelete = await Staff.findById(id);
+    if (!staffToDelete) {
+      return res.status(404).json({ error: "Staff not found" });
+    }
+
+    const { college_name, college_code } = staffToDelete;
+
+    // Delete the staff
+    await Staff.findByIdAndDelete(id);
+
+    const staffRemaining = await Staff.find({ college_code }); // use code as identifier
+if (staffRemaining.length === 0) {
+  await College.findOneAndDelete({ code: college_code });
+}
+
+    res.json({
+      message: "Staff deleted successfully",
+      collegeDeleted: staffRemaining.length === 0,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error deleting staff/college" });
+  }
+});
+
+
+
 
 // ✅ Start Server
 app.listen(5000, () => console.log("Server running on http://localhost:5000"));
