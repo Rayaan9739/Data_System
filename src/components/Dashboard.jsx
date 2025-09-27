@@ -42,65 +42,65 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="dashboard px-6 py-6">
+    <div className="dashboard">
       {/* Dashboard Header */}
-      <h2 className="text-3xl font-bold mb-6 text-blue-900">Dashboard</h2>
+      <h2>Dashboard</h2>
 
       {/* Statistic Cards */}
-      <div className="flex flex-wrap gap-6 mb-8 justify-start">
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl flex items-center gap-4 w-full sm:w-64 transition">
-          <FaUniversity className="text-blue-500 text-5xl" />
+      <div className="stats-row">
+        <div className="stat-card">
+          <FaUniversity className="stat-icon" />
           <div>
-            <div className="text-3xl font-bold text-blue-600">{counts.colleges}</div>
-            <div className="mt-1 text-gray-600 font-medium">Colleges</div>
+            <div className="stat-value">{counts.colleges}</div>
+            <div className="stat-label">Colleges</div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl flex items-center gap-4 w-full sm:w-64 transition">
-          <FaUsers className="text-green-500 text-5xl" />
+        <div className="stat-card">
+          <FaUsers className="stat-icon" style={{ color: "#16a34a" }} />
           <div>
-            <div className="text-3xl font-bold text-green-600">{counts.users}</div>
-            <div className="mt-1 text-gray-600 font-medium">Users</div>
+            <div className="stat-value" style={{ color: "#15803d" }}>
+              {counts.users}
+            </div>
+            <div className="stat-label">Users</div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl flex items-center gap-4 w-full sm:w-64 transition">
-          <FaChalkboardTeacher className="text-purple-500 text-5xl" />
+        <div className="stat-card">
+          <FaChalkboardTeacher
+            className="stat-icon"
+            style={{ color: "#7e22ce" }}
+          />
           <div>
-            <div className="text-3xl font-bold text-purple-600">{counts.faculty}</div>
-            <div className="mt-1 text-gray-600 font-medium">Faculty</div>
+            <div className="stat-value" style={{ color: "#6b21a8" }}>
+              {counts.faculty}
+            </div>
+            <div className="stat-label">Faculty</div>
           </div>
         </div>
       </div>
 
       {/* Staff Table */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
-        <h3 className="text-2xl font-bold mb-4 text-blue-900">All Staff</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full table-auto border-collapse border border-gray-200">
+      <div className="card">
+        <h3 style={{ marginBottom: "1rem", color: "#1e1b4b" }}>All Staff</h3>
+        <div className="table-container">
+          <table>
             <thead>
-              <tr className="bg-gray-100">
+              <tr>
                 {allStaff[0] &&
                   Object.keys(allStaff[0]).map((key) => (
-                    <th
-                      key={key}
-                      className="border px-4 py-2 text-left text-gray-700"
-                    >
-                      {key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")}
+                    <th key={key}>
+                      {key.charAt(0).toUpperCase() +
+                        key.slice(1).replace("_", " ")}
                     </th>
                   ))}
               </tr>
             </thead>
             <tbody>
               {allStaff.map((staff, index) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                >
+                <tr key={index}>
                   {Object.values(staff).map((val, i) => (
-                    <td key={i} className="border px-4 py-2 text-gray-800">
-                      {val}
-                    </td>
+                    <td key={i}>{val}</td>
                   ))}
                 </tr>
               ))}
@@ -109,9 +109,9 @@ export default function Dashboard() {
         </div>
 
         {/* Export Buttons */}
-        <div className="flex flex-wrap gap-4 mt-6">
+        <div className="export-buttons">
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+            className="export-btn export-btn-blue"
             onClick={() => {
               import("xlsx").then((XLSX) => {
                 const ws = XLSX.utils.json_to_sheet(allStaff);
@@ -125,7 +125,7 @@ export default function Dashboard() {
           </button>
 
           <button
-            className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition"
+            className="export-btn export-btn-gray"
             onClick={() => {
               import("jspdf").then((jsPDF) => {
                 import("jspdf-autotable").then((autoTable) => {
@@ -133,7 +133,8 @@ export default function Dashboard() {
                   const margin = 40;
                   const headers = Object.keys(allStaff[0] || {}).map(
                     (key) =>
-                      key.charAt(0).toUpperCase() + key.slice(1).replace("_", " ")
+                      key.charAt(0).toUpperCase() +
+                      key.slice(1).replace("_", " ")
                   );
                   const data = allStaff.map((item) => Object.values(item));
 
@@ -168,6 +169,12 @@ export default function Dashboard() {
           </button>
         </div>
       </div>
+
+      {/* Developer Note */}
+      <p className="dev-note">
+        Developed &amp; Maintained by{" "}
+        <b>Department of Technical Education, Government of Karnataka</b>
+      </p>
     </div>
   );
 }
