@@ -4,6 +4,7 @@ import Dashboard from "./components/Dashboard";
 import Navbar from "./components/Navbar";
 import LoginLogic from "./LoginLogic";
 
+
 export default function App() {
   const [page, setPage] = useState("login");
   const [user, setUser] = useState(null);
@@ -40,6 +41,7 @@ export default function App() {
         {/* Only one StaffForm with back button */}
         {page === "staff" && <StaffForm onBack={() => setPage("dashboard")} />}
       </div>
+     
     </>
   );
 }

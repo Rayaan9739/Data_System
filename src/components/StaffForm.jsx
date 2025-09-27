@@ -101,9 +101,9 @@ export default function StaffForm({ onBack }) {
           <button type="submit" className="btn-green">
             Save Staff
           </button>
-          <button type="button" onClick={onBack} className="btn-gray">
+          {/* <button type="button" onClick={onBack} className="btn-gray">
             Back to Dashboard
-          </button>
+          </button> */}
         </div>
       </form>
 

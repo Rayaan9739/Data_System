@@ -1,34 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
+import { HiMenu, HiX } from "react-icons/hi";
 
 export default function Navbar({ onNavigate, onLogout }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const toggleMobileMenu = () => setMobileOpen(!mobileOpen);
+
   return (
-    <header className="fixed top-0 left-0 w-full px-4 py-3 bg-white shadow-md flex flex-col sm:flex-row items-center justify-between z-50">
+    <header>
       {/* Logo */}
-      <div className="flex items-center space-x-3 mb-2 sm:mb-0">
-        <span className="text-xl font-bold text-blue-900">College DB</span>
+      <div className="logo">
+        <img src="/images/colleg.png" alt="Logo" className="w-8 h-8 object-contain" />
+        <span>College Data System</span>
       </div>
 
-      {/* Menu */}
-      <nav className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6 w-full sm:w-auto">
-        <button
-          onClick={() => onNavigate("dashboard")}
-          className="text-gray-700 hover:text-blue-900 font-medium transition text-sm sm:text-base w-full sm:w-auto"
-        >
-          Dashboard
-        </button>
-        <button
-          onClick={() => onNavigate("staff")}
-          className="text-gray-700 hover:text-blue-900 font-medium transition text-sm sm:text-base w-full sm:w-auto"
-        >
-          Staff Form
-        </button>
+      {/* Desktop Menu */}
+      <nav className="desktop-menu">
+        <button onClick={() => onNavigate("dashboard")}>Dashboard</button>
+        <button onClick={() => onNavigate("staff")}>Staff Form</button>
         <button
           onClick={onLogout}
-          className="border-2 border-blue-500 text-blue-500 py-1 px-3 sm:py-1.5 sm:px-4 rounded-full hover:bg-blue-500 hover:text-white transition text-sm sm:text-base w-full sm:w-auto"
+          className="border-2 border-blue-500 rounded-full px-3 py-1 hover:bg-blue-500 hover:text-white transition"
         >
           Logout
         </button>
       </nav>
+
+      {/* Hamburger for Mobile */}
+      <div className="hamburger" onClick={toggleMobileMenu}>
+        {mobileOpen ? <HiX /> : <HiMenu />}
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${mobileOpen ? "active" : ""}`}>
+        <button
+          onClick={() => {
+            onNavigate("dashboard");
+            setMobileOpen(false);
+          }}
+        >
+          Dashboard
+        </button>
+        <button
+          onClick={() => {
+            onNavigate("staff");
+            setMobileOpen(false);
+          }}
+        >
+          Staff Form
+        </button>
+        <button
+          onClick={() => {
+            onLogout();
+            setMobileOpen(false);
+          }}
+        >
+          Logout
+        </button>
+      </div>
     </header>
   );
 }

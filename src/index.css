@@ -4,17 +4,40 @@
 @tailwind utilities;
 
 /* base reset + font */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes slideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.3s ease-out;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
 }
+
 html,
 body,
 #root {
   height: 100%;
 }
+
 body {
   background: linear-gradient(to bottom right, #ebf4ff, #f0fdf4);
   min-height: 100vh;
@@ -65,9 +88,11 @@ body {
 .auth-box {
   max-width: 460px;
 }
+
 .form-box {
   max-width: 1000px;
 }
+
 .staff-form {
   max-width: 720px;
 }
@@ -79,13 +104,16 @@ body {
 }
 
 @media (min-width: 640px) {
+
   .auth-box,
   .form-box,
   .staff-form {
     padding: 2.5rem;
   }
 }
+
 @media (min-width: 768px) {
+
   .auth-box,
   .form-box,
   .staff-form {
@@ -149,6 +177,7 @@ button:hover,
   background: #16a34a;
   color: #fff;
 }
+
 .btn-green:hover {
   background: #15803d;
 }
@@ -157,6 +186,7 @@ button:hover,
   background: #2563eb;
   color: #fff;
 }
+
 .btn-blue:hover {
   background: #1d4ed8;
 }
@@ -165,6 +195,7 @@ button:hover,
   background: #6b7280;
   color: #fff;
 }
+
 .btn-gray:hover {
   background: #4b5563;
 }
@@ -174,9 +205,11 @@ button:hover,
   margin-top: 1rem;
   font-size: 0.95rem;
 }
+
 .form-msg.success {
   color: #059669;
 }
+
 .form-msg.error {
   color: #dc2626;
 }
@@ -187,11 +220,13 @@ button:hover,
   overflow-x: auto;
   border-radius: 8px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
 }
+
 thead th {
   background: #f8fafc;
   color: #374151;
@@ -200,17 +235,21 @@ thead th {
   text-align: left;
   border-bottom: 1px solid #e6eef8;
 }
+
 tbody td {
   padding: 0.75rem;
   border-bottom: 1px solid #f1f5f9;
   color: #0f172a;
 }
+
 tbody tr:nth-child(even) {
   background: #fff;
 }
+
 tbody tr:nth-child(odd) {
   background: #fbfdff;
 }
+
 .table-actions button {
   margin-right: 0.5rem;
 }
@@ -225,6 +264,7 @@ tbody tr:nth-child(odd) {
   justify-content: center;
   z-index: 2000;
 }
+
 .modal-content {
   width: 94%;
   max-width: 480px;
@@ -234,11 +274,13 @@ tbody tr:nth-child(odd) {
   box-shadow: 0 10px 30px rgba(2, 6, 23, 0.16);
   text-align: center;
 }
+
 .modal-content h4 {
   color: #0f172a;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
+
 .modal-content p {
   color: #374151;
 }
@@ -249,6 +291,7 @@ tbody tr:nth-child(odd) {
   margin: 7rem auto 2rem;
   padding: 1.5rem;
 }
+
 .dashboard h2 {
   font-size: 2rem;
   font-weight: 800;
@@ -263,6 +306,7 @@ tbody tr:nth-child(odd) {
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
+
 .stat-card {
   flex: 1 1 260px;
   background: #ffffff;
@@ -275,19 +319,23 @@ tbody tr:nth-child(odd) {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
+
 .stat-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
 }
+
 .stat-icon {
   font-size: 2.8rem;
   color: #2563eb;
 }
+
 .stat-value {
   font-size: 2rem;
   font-weight: 800;
   color: #1e3a8a;
 }
+
 .stat-label {
   font-size: 0.95rem;
   color: #6b7280;
@@ -300,7 +348,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0.5rem 1.5rem;
-  background-color: #1e1b4b; /* dark blue background */
+  background-color: #1e1b4b;
+  /* dark blue background */
   color: white;
   position: fixed;
   top: 0;
@@ -323,8 +372,10 @@ header .logo {
 /* Desktop Menu */
 header nav {
   display: flex;
-  flex-wrap: wrap; /* allow wrapping */
-  gap: 0.5rem; /* smaller space between items */
+  flex-wrap: wrap;
+  /* allow wrapping */
+  gap: 0.5rem;
+  /* smaller space between items */
 }
 
 header nav button {
@@ -337,13 +388,15 @@ header nav button {
 }
 
 header nav button:hover {
-  color: #2563eb; /* blue hover */
+  color: #2563eb;
+  /* blue hover */
   transform: scale(1.05);
 }
 
 /* Hamburger button */
 .hamburger {
-  display: none; /* hidden on desktop */
+  display: none;
+  /* hidden on desktop */
   font-size: 1.75rem;
   cursor: pointer;
   color: white;
@@ -352,6 +405,12 @@ header nav button:hover {
 
 .hamburger:hover {
   color: #2563eb;
+}
+
+/* Desktop nav - hidden on mobile */
+.desktop-menu {
+  display: flex;
+  gap: 1rem;
 }
 
 /* Mobile Menu */
@@ -391,15 +450,31 @@ header nav button:hover {
 
   header nav button:nth-child(1),
   header nav button:nth-child(2) {
-    flex: 0 0 48%; /* first two side by side */
+    flex: 0 0 48%;
+    /* first two side by side */
   }
 
   header nav button:nth-child(3) {
-    flex: 0 0 100%; /* full width */
-    text-align: center; /* center it */
+    flex: 0 0 100%;
+    /* full width */
+    text-align: center;
+    /* center it */
   }
 
   header nav button {
     margin-bottom: 0.5rem;
   }
+
+   .desktop-menu {
+    display: none; /* hide desktop nav on mobile */
+  }
+
+  .hamburger {
+    display: block; /* show hamburger on mobile */
+  }
+
+  .mobile-menu.active {
+    display: flex; /* show menu when toggled */
+  }
+
 }

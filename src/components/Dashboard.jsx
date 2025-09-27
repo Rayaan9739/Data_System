@@ -11,36 +11,74 @@ export default function Dashboard() {
   });
 
   // Fetch staff data and counts
-  useEffect(() => {
-    fetchAllStaff();
-    fetchCounts();
-  }, []);
+ useEffect(() => {
+   fetchAllCounts();
+  fetchAllStaff();
+}, []);
 
-  const fetchAllStaff = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/staff");
-      setAllStaff(res.data);
+const fetchAllCounts = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/counts");
+    setCounts({
+      colleges: res.data.colleges,
+      users: res.data.users,
+      faculty: res.data.faculty,
+    });
+  } catch (err) {
+    console.error("Failed to fetch counts:", err);
+  }
+};
 
-      // Update faculty count automatically based on staff
-      setCounts((prev) => ({ ...prev, faculty: res.data.length }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
-  const fetchCounts = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/counts");
-      setCounts((prev) => ({
-        ...prev,
-        colleges: res.data.colleges || 0,
-        users: res.data.users || 0,
+const fetchAllStaff = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/staff");
+    const staffData = res.data;
+
+    setAllStaff(staffData);
+
+    const facultyCount = staffData.length;
+    const uniqueColleges = [...new Set(staffData.map((s) => s.college_name))];
+
+    // Merge with previous state to keep users count
+    setCounts((prev) => ({
+      ...prev,
+      faculty: facultyCount,
+      colleges: uniqueColleges.length,
+    }));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const handleDeleteStaff = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this staff?")) return;
+
+  try {
+    await axios.delete(`http://localhost:5000/staff/${id}`);
+
+    // Remove from frontend state
+    setAllStaff((prevStaff) => {
+      const updatedStaff = prevStaff.filter((staff) => staff._id !== id);
+
+      // Update counts after deleting
+      const uniqueColleges = [...new Set(updatedStaff.map((s) => s.college_name))];
+      setCounts((prevCounts) => ({
+        ...prevCounts,
+        faculty: updatedStaff.length,
+        colleges: uniqueColleges.length,
       }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
+      return updatedStaff;
+    });
+  } catch (err) {
+    console.error(err);
+    alert("Failed to delete staff");
+  }
+};
+
+
+ 
   return (
     <div className="dashboard">
       {/* Dashboard Header */}
@@ -96,20 +134,30 @@ export default function Dashboard() {
                   ))}
               </tr>
             </thead>
-            <tbody>
-              {allStaff.map((staff, index) => (
-                <tr key={index}>
-                  {Object.values(staff).map((val, i) => (
-                    <td key={i}>{val}</td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
+           <tbody>
+  {allStaff.map((staff, index) => (
+    <tr key={index}>
+      {Object.values(staff).map((val, i) => (
+        <td key={i}>{val}</td>
+      ))}
+      {/* Delete Button */}
+      <td>
+        <button
+          onClick={() => handleDeleteStaff(staff._id)}
+          className="bg-red-500 text-white font-medium px-2 py-1 rounded-md cursor-pointer hover:bg-red-600 hover:scale-105 transition-transform"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  ))}
+</tbody>
+
           </table>
         </div>
 
         {/* Export Buttons */}
-        <div className="export-buttons">
+        <div className="export-buttons flex space-x-6 mt-4">
           <button
             className="export-btn export-btn-blue"
             onClick={() => {
@@ -170,11 +218,18 @@ export default function Dashboard() {
         </div>
       </div>
 
+     
+     
+     
+     
+     
+     
       {/* Developer Note */}
-      <p className="dev-note">
+
+      {/* <p className="footer">
         Developed &amp; Maintained by{" "}
         <b>Department of Technical Education, Government of Karnataka</b>
-      </p>
+      </p> */}
     </div>
   );
 }
